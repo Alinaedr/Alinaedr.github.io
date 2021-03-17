@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mutual exclusivity</title>
+    <script src="jspsych/jspsych.js"></script>
+    <script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych/plugins/jspsych-instructions.js"></script>
+    <link href="jspsych/css/jspsych.css" rel="stylesheet">
+</head>
+<body></body>
+<script>
+    var timeline = [];
+
+    var instructions = {
+        type: 'instructions',
+        pages: ['Welcome!','<p>Aliens came to Earth!</p>'+'<p>When an alien wants an object, they may emit a color. And sometimes they may just use telepathy.</p>'+
+        '<p>Your task is to guess which object they request.</p>'+ '<p>Press Next to see some examples.</p>',
+        '<p><img src="example1.png"></img> Example 1. The alien wants <img src="objectnew3.png"></img> by emitting a color. You need to click on the object the alien wants.</p>'+
+        '<p><img src="example3.png"></img> Example 2. The alien wants one object. You need to guess which object the alien wants and click on it.</p>'+
+        '<p><img src="example2.png"></img>Example 3. The alien wants <img src="object4-instr-small.jpg"></img> through telepathy. You need to click on the object the alien wants.</p>'+
+    'Press Next to start.'],
+        show_clickable_nav: true
+    };
+    timeline.push(instructions);
+
+    var objects_training = [
+        {object: 'training_object1.png'},
+        {object: 'training_object2.png'},
+        {object: 'training_object3.png'},
+        {object: 'training_object4.png'},
+        {object: 'training_object5.png'},
+        {object: 'training_object6.png'},
+        {object: 'training_object7.png'},
+        {object: 'training_object8.png'},
+        {object: 'training_object9.png'},
+        {object: 'training_object10.png'}
+    ]
+
+    var objects_trials = [
+        'object1-150.jpg',
+        'object2-150.jpg',
+        'object3-150.jpg',
+        'object4-150.jpg',
+        'object5-150.jpg',
+        'object6-150.jpg',
+        'object7-150.jpg',
+        'object8-150.jpg',
+        'object9-150.jpg',
+        'object10-150.jpg',
+        'object11-150.jpg',
+        'object12-150.jpg',
+        'object13-150.jpg',
+        'object14-150.jpg',
+        'object15-150.jpg',
+        'object16-150.jpg',
+        'object17-150.jpg',
+        'object18-150.jpg',
+        'object19-150.jpg',
+        'object20-150.jpg',
+        'object21-150.jpg',
+        'object22-150.jpg',
+        'object23-150.jpg',
+        'object24-150.jpg',
+        'object25-150.jpg',
+        'object26-150.jpg',
+        'object27-150.jpg',
+        'object28-150.jpg',
+        'object29-150.jpg',
+        'object30-150.jpg']
+
+
+
+    //var training_trial = {
+    //    type: 'html-keyboard-response',
+    //    stimulus: '<span style="padding-right:100px;"><img src="training_object2.png"></span>' + '<span style="padding-left:200px;"><img src="alien2pointing200.png"></span>',
+    //    choices: ['f'],
+    //};
+
+    //var start_training = {
+    //    type: 'html-button-response',
+    //    stimulus: "<p>You will now practice giving an alien the object they are asking for.</p>"+
+    //        "<p>To do this, you will need to click on the object the alien wants.</p><p>Click the 'Next' button to start.</p>",
+    //    choices: ['Next'],
+    //    post_trial_gap: 1000
+    //};
+    //timeline.push(start_training);
+
+    var training_trial1 = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-no-bubble-300.png">',
+        choices: ['<img src="training_object1.png"></img>'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px; border:5px solid; border-color: #696969;">%choice%</button>']
+    };
+    timeline.push(training_trial1);
+
+    var training_trial2 = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color1-300.png">',
+        choices: ['<img src="training_object2.png"></img>'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px; border:5px solid; border-color: #696969;">%choice%</button>']
+    };
+    timeline.push(training_trial2);
+
+    var training_trial3 = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        choices: ['<img src="training_object3.png"></img>'],
+        stimulus: '<img src="stimuli_task/alien-color2-300.png">',
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px; border:5px solid; border-color: #696969;">%choice%</button>']
+    };
+    timeline.push(training_trial3);
+
+    var training_trial4 = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color3-300.png">',
+        choices: ['<img src="training_object4.png"></img>'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px; border:5px solid; border-color: #696969;">%choice%</button>']
+    };
+    timeline.push(training_trial4);
+
+    var training_trial5 = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color4-300.png">',
+        choices: ['<img src="training_object5.png"></img>'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px; border:5px solid; border-color: #696969;">%choice%</button>']
+    };
+    timeline.push(training_trial5);
+
+    //var start_task= {
+    //    type: 'html-button-response',
+    //    stimulus: '<p>You have searched the surroundings of the spaceship and found these lost objects:</p> <p><img src="stimuli_task/final_set/object1-150.jpg"><img src="stimuli_task/final_set/object2-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object3-150.jpg"><img src="stimuli_task/final_set/object4-150.jpg"><img src="stimuli_task/final_set/object5-150.jpg"><img src="stimuli_task/final_set/object6-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object7-150.jpg"><img src="stimuli_task/final_set/object8-150.jpg"><img src="stimuli_task/final_set/object9-150.jpg"><img src="stimuli_task/final_set/object10-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object11-150.jpg"><img src="stimuli_task/final_set/object12-150.jpg"><img src="stimuli_task/final_set/object13-150.jpg"><img src="stimuli_task/final_set/object14-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object15-150.jpg"><img src="stimuli_task/final_set/object16-150.jpg"><img src="stimuli_task/final_set/object17-150.jpg"><img src="stimuli_task/final_set/object18-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object19-150.jpg"><img src="stimuli_task/final_set/object20-150.jpg"><img src="stimuli_task/final_set/object21-150.jpg"><img src="stimuli_task/final_set/object22-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object23-150.jpg"><img src="stimuli_task/final_set/object24-150.jpg"><img src="stimuli_task/final_set/object25-150.jpg"><img src="stimuli_task/final_set/object26-150.jpg">'+
+    //    '<img src="stimuli_task/final_set/object27-150.jpg"><img src="stimuli_task/final_set/object28-150.jpg"><img src="stimuli_task/final_set/object29-150.jpg"><img src="stimuli_task/final_set/object30-150.jpg">',
+    //    choices: ['Next'],
+    //    post_trial_gap: 1000
+    // };
+    // timeline.push(start_task);
+
+    // var start_task2= {
+    //    type: 'html-button-response',
+    //    stimulus: '<p>You noticed that the aliens use the following colors to refer to these objects:</p>'+
+    //    '<img src="stimuli_task/final_set/30colors.png">',
+    //    choices: ['Next'],
+    //    post_trial_gap: 1000
+    //};
+    // timeline.push(start_task2);
+
+    // var start_task3= {
+    //     type: 'html-button-response',
+    //    stimulus: '<p>The aliens want you to learn the names of their objects.</p>'+
+    //    '<p>An alien will ask you for an object and you will need to guess which object the alien referred to.</p>'+
+    //    '<p>To choose an object and give it to the alien, you need to click on it.</p>',
+    //    choices: ['Next'],
+    //    post_trial_gap: 1000
+    // };
+    // timeline.push(start_task3);
+
+//    function random_object() {
+//        var rand_images = jsPsych.randomization.sampleWithoutReplacement(objects_trials,1);
+//        return '<img src="' + rand_images[0]  + '" />';
+//    };
+
+//    jsPsych.data.addProperties({
+//        object: random_object
+//    });
+
+    var trial1a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color5-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object1-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial1a);
+
+    var trial1b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color6-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object2-150.jpg">', '<img src="stimuli_task/final_set/object1-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial1b);
+
+    var trial2a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color7-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object3-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial2a);
+
+    var trial2b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color8-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object3-150.jpg">', '<img src="stimuli_task/final_set/object4-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial2b);
+
+    var trial3a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color9-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object5-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial3a);
+
+    var trial3b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color10-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object6-150.jpg">', '<img src="stimuli_task/final_set/object5-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial3b);
+
+    var trial4a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color11-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object7-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial4a);
+
+    var trial4b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color12-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object8-150.jpg">', '<img src="stimuli_task/final_set/object7-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial4b);
+
+    var trial5adem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-no-bubble-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object9-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial5adem);
+
+    var trial5bdem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color13-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object9-150.jpg">', '<img src="stimuli_task/final_set/object10-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial5bdem);
+
+    var trial6a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color14-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object11-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial6a);
+
+    var trial6b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color15-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object11-150.jpg">', '<img src="stimuli_task/final_set/object12-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial6b);
+
+    var trial7a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color16-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object13-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial7a);
+
+    var trial7b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color17-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object14-150.jpg">', '<img src="stimuli_task/final_set/object13-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial7b);
+
+    var trial8a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color18-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object15-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial8a);
+
+    var trial8b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color19-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object16-150.jpg">', '<img src="stimuli_task/final_set/object15-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial8b);
+
+    var trial9adem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-no-bubble-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object17-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial9adem);
+
+    var trial9bdem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color20-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object17-150.jpg">', '<img src="stimuli_task/final_set/object18-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial9bdem);
+
+    var trial10a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color21-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object19-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial10a);
+
+    var trial10b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color22-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object20-150.jpg">', '<img src="stimuli_task/final_set/object19-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial10b);
+
+    var trial11adem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-no-bubble-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object21-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial11adem);
+
+    var trial11bdem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color23-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object22-150.jpg">', '<img src="stimuli_task/final_set/object21-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial11bdem);
+
+    var trial12a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color24-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object23-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial12a);
+
+    var trial12b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color25-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object23-150.jpg">', '<img src="stimuli_task/final_set/object24-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial12b);
+
+    var trial13a = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color26-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object25-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial13a);
+
+    var trial13b = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color27-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object26-150.jpg">', '<img src="stimuli_task/final_set/object25-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial13b);
+
+    var trial14adem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-no-bubble-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object27-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial14adem);
+
+    var trial14bdem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color28-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object27-150.jpg">', '<img src="stimuli_task/final_set/object28-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial14bdem);
+
+    var trial15adem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-no-bubble-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object29-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:150px; left:643px;">%choice%</button>']
+    };
+    timeline.push(trial15adem);
+
+    var trial15bdem = {
+        type: 'html-button-response',
+        prompt: 'Click on the object the alien wants!',
+        stimulus: '<img src="stimuli_task/alien-color29-300.png">',
+        choices: ['<img src="stimuli_task/final_set/object30-150.jpg">', '<img src="stimuli_task/final_set/object29-150.jpg">'],
+        button_html: ['<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:570px;">%choice%</button>', '<button class="jspsych-btn" style = "border:5px solid; border-color: #696969; position:absolute; top:140px; left:720px;">%choice%</button>']
+    };
+    timeline.push(trial15bdem);
+
+
+    jsPsych.init({
+        timeline: timeline,
+        on_finish: function() {
+            jsPsych.data.displayData();
+        }
+    })
+
+</script>
